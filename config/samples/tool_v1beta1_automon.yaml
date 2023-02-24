@@ -1,0 +1,19 @@
+apiVersion: tool.liuxiangbiao.com/v1beta1
+kind: Automon
+metadata:
+  name: automon-nginx           # 资源名称 下面的关联资源都和此名称相同
+spec:
+  quantity: 2                    # 副本数量
+  image: nginx:1.7.9              # 镜像
+  port:                           #service端口
+  - port: 80
+    targetPort: 80
+  rule:                                  # 定义ingress
+  - host: www.nginx.com                 #自定义域名
+    http:
+      paths:
+      - path: /                      #定义站点路径
+        backend:                         #定义后端引用的服务
+          serviceName: automon-nginx      #对应上面创建的automon名称（对应的service名称也是一样）
+          servicePort: 80                   #service端口
+
